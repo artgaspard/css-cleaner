@@ -1,0 +1,12 @@
+{
+	"name": "css-scraper",
+	"scripts": {
+		"css-scraper": "css-scraper.js"
+	},
+	"dependencies": {
+		"fs": "0.0.1-security",
+		"path": "^0.12.7",
+		"ucss": "^0.5.1",
+		"website-scraper": "^3.3.2"
+	}
+}
