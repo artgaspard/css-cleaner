@@ -1,5 +1,6 @@
 var scrape = require('website-scraper');
 var ucss = require('ucss');
+var config = require('./config_ucss.js');
 var fs = require('fs');
 var path = require('path');
 
@@ -42,8 +43,7 @@ scrape(options).then((result) => {
 			};
 			var logger = null;
 			ucss.analyze(html, css, context, logger, function(result) {
-				console.log('CSS COMPARISON OK');
-				console.log(result);
+				console.log(config.result(result));
 			});
 		});
 	});
@@ -111,6 +111,3 @@ console.log('cssFiles 2 = ' + cssFiles);
 	});
 }, errHandler);
 */
-
-
-
