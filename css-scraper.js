@@ -14,78 +14,89 @@ var options = {
 	maxRecursiveDepth: '1'
 };
 
-/*
-   var dirPath = path.resolve('./web-files/css'); // path to your directory goes here
-   var filesList;
-   fs.readdir(dirPath, function(err, files){
-   filesList = files.filter(function(e){
-   return path.extname(e).toLowerCase() === '.css'
-   });
-   console.log(filesList);
-   });
+var cssArray;
+var htmlArray;
 
-   var css = [filesList];
-   var html = ["./web-files/index.html"];
-   var context = {
-   timeout: 400
-   };
-   var logger = null;
-   */
-
-var errHandler = function(err) {
-	console.log(err);
-}
-
-var cssFiles;
-
-/*
-//scrape url
-scrape(options).then(function() {
-		fs.readdir('web-files/css', function(err, files) {
-			if (err) {
-				console.log('Error reading directory');
-				console.log(err);
-			return;
-			}
-			cssFiles = files.filter(function(e){
-				return path.extname(e).toLowerCase() === '.css'
+scrape(options).then((result) => {
+//select css files
+	fs.readdir('web-files/css', function(err, files) {
+		cssArray = files.filter(function(e) {
+			return path.extname(e).toLowerCase() === '.css'
+		});
+		for(var i = 0; i < cssArray.length; i++) {
+			cssArray[i]="./web-files/css/"+cssArray[i];
+		}
+//select html files
+		fs.readdir('web-files', function(err, files) {
+			htmlArray = files.filter(function(e) {
+				return path.extname(e).toLowerCase() === '.html'
 			});
-			console.log('cssfiles= ' + cssFiles);
-		})}).then( function() {
-
-	console.log('cssfiles2= ' + cssFiles);
-		var css = ["./web-files/css/css.css"];
-		var html = ["./web-files/index.html"];
-		var context = {
-			timeout: 400
-		};
-		var logger = null;
-	}).then( function() {
-		//compare css and html
-		ucss.analyze(html, css, context, logger, function(result) {
-			console.log('CSS COMPARISON OK');
-			console.log(result);
-		})
+			for(var i = 0; i < htmlArray.length; i++) {
+				htmlArray[i]="./web-files/"+htmlArray[i];
+			}
+//compare css and html
+			var css = cssArray;
+			var html = htmlArray;
+			var context = {
+				timeout: 400
+			};
+			var logger = null;
+			ucss.analyze(html, css, context, logger, function(result) {
+				console.log('CSS COMPARISON OK');
+				console.log(result);
+			});
+		});
 	});
-
-.catch((err) => {
-	console.log('Error scraping files');
+}).catch((err) => {
 	console.log(err);
 });
-*/
 
-scrape(options).then((cssFiles) => {
-	fs.readdir('web-files/css', function(err, files) {
+//var cssFiles;
+//var htmlFiles;
+//var html;
+//var css;
+//var context;
+//var logger;
+/*
+Promise.all([scrape(options).then(function(cssFiles) {
+	fs.readdirSync('web-files/css', function(err, files) {
 		if (err) {
 			console.log(err);
 			return;
 		}
-		cssFiles = files.filter(function(e) {
+		var cssFiles = files.filter(function(e) {
 			return path.extname(e).toLowerCase() === '.css'
+		});
+console.log('cssFiles = ' + cssFiles);
+	})}, errHandler).then(function(htmlFiles) {
+	fs.readdirSync('web-files', function(err, files) {
+		if (err) {
+			console.log(err);
+			return;
+		}
+		var htmlFiles = files.filter(function(e) {
+			return path.extname(e).toLowerCase() === '.html'
+		});
+console.log('htmlFiles = ' + htmlFiles);
+	})}, errHandler)]).then(() => {
+//console.log('cssFiles 2 = ' + cssFiles);
+//console.log('htmlFiles 2 = ' + htmlFiles);
+
+		var css = [cssFiles];
+		var html = [htmlFiles];
+		var context = {
+			timeout: 400
+		};
+		var logger = null;
+
+		ucss.analyze(html, css, context, logger, function(result) {
+		console.log('CSS COMPARISON OK');
+		console.log('result = ' + result);
 		})
-	console.log(cssFiles);
-	});
-}, errHandler).then(() => {
+	}, errHandler);
+*/
+/*
+.then((cssFiles) => {
 	var css = ["./web-files/css/css.css"];
 	var html = ["./web-files/index.html"];
 	var context = {
@@ -93,20 +104,13 @@ scrape(options).then((cssFiles) => {
 	};
 	var logger = null;
 
+console.log('cssFiles 2 = ' + cssFiles);
 	ucss.analyze(html, css, context, logger, function(result) {
 		console.log('CSS COMPARISON OK');
-		console.log(result);
+		console.log('result = ' + result);
 	});
 }, errHandler);
-
-
-
-
-
-
-
-
-
+*/
 
 
 
